@@ -14,29 +14,55 @@ public class Board {
 	//       [ 0] [ 1] [ 2] [ 3] [ 4] [ 5] { 6P} 
 	// {13P} [12] [11] [10] [ 9] [ 8] [ 7]
 	private final List<Pit> pits;
-	
+	private final List<Player> players;
 	private Player currentPlayer;
 	
 	public Board(Player playerA, Player playerB) {
+		// initialize arrays
 		this.pits = new ArrayList<Pit>();
-		for (Player player : Arrays.asList(playerA, playerB)) {
+		this.players = Arrays.asList(playerA, playerB);
+		// initialize pits
+		for (Player player : this.players) {
 			for (int i = 0; i < PIT_PER_PLAYER; i++) {
 				Pit pit = new Pit(player, i);
+				// initialize stones
 				for (int j = 0; j < STONES_PER_PIT; j++) {
 					pit.addStone(new Stone(UUID.randomUUID().toString()));
 				}
 				this.pits.add(pit);
 			}
+			// don't forget the Lubang
 			this.pits.add(new LubangMenggali(player));
 		}
+		// randomly select current player
+		int index = (int) Math.round(Math.random());
+		this.currentPlayer = this.players.get(index);
 	}
 	
 	public Player getCurrentPlayer() {
 		return currentPlayer;
 	}
 	
-	public void setCurrentPlayer(Player currentPlayer) {
-		this.currentPlayer = currentPlayer;
+	public List<Pit> getPits() {
+		return this.pits;
+	}
+	
+	public List<Stone> getAllStones() {
+		List<Stone> stones = new ArrayList<>();
+		for (Pit pit : this.pits) {
+			stones.addAll(pit.getStones());
+		}
+		return stones;
+	}
+	
+	public boolean isFinished() {
+		int startIndex = (this.pits.get(0).getPlayer().equals(currentPlayer)) ? 0 : PIT_PER_PLAYER + 1;
+		for (int i = startIndex; i < PIT_PER_PLAYER + 1; i++) {
+			if (!pits.get(i).isEmpty()) {
+				return false;
+			}
+		}
+		return true;
 	}
 	
 	public Pit getNext(Pit pit) {
@@ -61,32 +87,16 @@ public class Board {
 		return this.pits.get(opposant);
 	}
 	
-	public LubangMenggali getLubangForPlayer(Player player) {
-		int index = (this.pits.get(0).getPlayer().equals(player)) ? 
+	public LubangMenggali getLubangForCurrentPlayer() {
+		int index = (this.pits.get(0).getPlayer().equals(currentPlayer)) ? 
 				PIT_PER_PLAYER : (2 * PIT_PER_PLAYER) + 1;
 		return (LubangMenggali) this.pits.get(index);
 	}
 	
-	public boolean isPlayerFinished(Player player) {
-		int startIndex = (this.pits.get(0).getPlayer().equals(player)) ? 0 : PIT_PER_PLAYER + 1;
-		for (int i = startIndex; i < PIT_PER_PLAYER + 1; i++) {
-			if (!pits.get(i).isEmpty()) {
-				return false;
-			}
-		}
-		return true;
-	}
-	
-	public List<Pit> getPits() {
-		return this.pits;
-	}
-	
-	public List<Stone> getAllStones() {
-		List<Stone> stones = new ArrayList<>();
-		for (Pit pit : this.pits) {
-			stones.addAll(pit.getStones());
-		}
-		return stones;
+	public void switchCurrentPlayer() {
+		int currentIndex = this.players.indexOf(currentPlayer);
+		int nextIndex = (currentIndex == 0) ? 1 : 0;
+		this.currentPlayer = this.players.get(nextIndex);
 	}
 	
 }

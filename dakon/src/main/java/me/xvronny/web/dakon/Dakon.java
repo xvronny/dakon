@@ -50,6 +50,7 @@ public class Dakon {
           attributes.put("brand", "Dakon");
           attributes.put("title", "Lubang Menggali");
           attributes.put("source", "https://github.com/xvronny/dakon");
+          
           attributes.put("board", board);
     	  
           return new ModelAndView(attributes, "board.ftl");
