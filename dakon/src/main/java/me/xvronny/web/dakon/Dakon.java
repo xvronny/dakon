@@ -24,16 +24,15 @@ import spark.template.freemarker.FreeMarkerEngine;
 public class Dakon {
 
    public static void main(String[] args) {
+	   
+	  staticFileLocation("/static");
       
       get("/dakon", (request, response) -> {
-    	  /*Session session = request.session(true);
-    	  Board board = session.attribute("board");
-    	  if (board == null) {
-    		  board = new Board(new Player("A"), new Player("B"));
-    		  session.attribute("board", board);
-    	  }*/
     	  Map<String, Object> attributes = new HashMap<>();
-          attributes.put("message", "Hello World!");
+          attributes.put("brand", "Dakon");
+          attributes.put("title", "Lubang Menggali");
+          attributes.put("source", "https://github.com/xvronny/dakon");
+          attributes.put("homepage", "http://xvronny.me/");
     	  return new ModelAndView(attributes, "dakon.ftl");
       }, new FreeMarkerEngine());
       
