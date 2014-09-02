@@ -7,6 +7,7 @@ import java.util.Map;
 
 import me.xvronny.web.dakon.model.Board;
 import me.xvronny.web.dakon.model.Player;
+import me.xvronny.web.dakon.util.JsonTransformer;
 import spark.ModelAndView;
 import spark.Session;
 import spark.template.freemarker.FreeMarkerEngine;
@@ -25,16 +26,52 @@ public class Dakon {
 
    public static void main(String[] args) {
 	   
+	  // static file declaration
 	  staticFileLocation("/static");
       
-      get("/dakon", (request, response) -> {
+	  // load homepage template
+      get("/", (request, response) -> {
     	  Map<String, Object> attributes = new HashMap<>();
           attributes.put("brand", "Dakon");
           attributes.put("title", "Lubang Menggali");
           attributes.put("source", "https://github.com/xvronny/dakon");
           attributes.put("homepage", "http://xvronny.me/");
-    	  return new ModelAndView(attributes, "dakon.ftl");
+    	  return new ModelAndView(attributes, "home.ftl");
       }, new FreeMarkerEngine());
+      
+      // create new board
+      get("/board", (request, response) -> {
+    	  Session session = request.session(true);
+    	  Board board = new Board(new Player("playerA"), new Player("playerB"));
+    	  session.attribute("board", board);
+    	  Map<String, Object> attributes = new HashMap<>();
+          attributes.put("brand", "Dakon");
+          attributes.put("title", "Lubang Menggali");
+          attributes.put("source", "https://github.com/xvronny/dakon");
+          attributes.put("homepage", "http://xvronny.me/");
+    	  return new ModelAndView(attributes, "board.ftl");
+      }, new FreeMarkerEngine());
+      
+      // read current board
+      get("/board/read", "application/json", (request, response) -> {
+    	  return request.session().attribute("board");
+      }, new JsonTransformer());
+      
+      // load saved board elsewhere
+      put("/board", "application/json", (request, response) -> {
+    	  JsonTransformer transformer = new JsonTransformer(); //request.body();
+    	  
+    	  Board board = transformer.parse(request.body(), Board.class);
+    	  request.session().attribute("board", board);
+    	  return board;
+      }, new JsonTransformer());
+      
+      // move pieces of the board
+      post("/board/move", "application/json", (request, response) -> {
+    	  Session session = request.session(true);
+    	  Board board = session.attribute("board");
+    	  return board;
+      }, new JsonTransformer());
       
    }
 

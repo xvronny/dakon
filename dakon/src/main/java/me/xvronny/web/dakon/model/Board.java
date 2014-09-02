@@ -3,6 +3,7 @@ package me.xvronny.web.dakon.model;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 public class Board {
 	
@@ -17,7 +18,7 @@ public class Board {
 			for (int i = 0; i < PIT_PER_PLAYER; i++) {
 				Pit pit = new Pit(player);
 				for (int j = 0; j < STONES_PER_PIT; j++) {
-					pit.addStone(new Stone());
+					pit.addStone(new Stone(UUID.randomUUID().toString()));
 				}
 				this.pits.add(pit);
 			}
@@ -62,6 +63,14 @@ public class Board {
 			}
 		}
 		return true;
+	}
+	
+	public List<Stone> getAllStones() {
+		List<Stone> stones = new ArrayList<>();
+		for (Pit pit : this.pits) {
+			stones.addAll(pit.getStones());
+		}
+		return stones;
 	}
 	
 }

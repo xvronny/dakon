@@ -45,7 +45,7 @@
 		            <ul class="dropdown-menu">
 		              
 						<li>
-		                    <a href="/newboard">
+		                    <a href="/board">
 		                       <i class="icon-signal"></i>
 		                       Start New Board
 		                     </a>
