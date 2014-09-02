@@ -15,6 +15,8 @@ public class Board {
 	// {13P} [12] [11] [10] [ 9] [ 8] [ 7]
 	private final List<Pit> pits;
 	
+	private Player currentPlayer;
+	
 	public Board(Player playerA, Player playerB) {
 		this.pits = new ArrayList<Pit>();
 		for (Player player : Arrays.asList(playerA, playerB)) {
@@ -29,6 +31,13 @@ public class Board {
 		}
 	}
 	
+	public Player getCurrentPlayer() {
+		return currentPlayer;
+	}
+	
+	public void setCurrentPlayer(Player currentPlayer) {
+		this.currentPlayer = currentPlayer;
+	}
 	
 	public Pit getNext(Pit pit) {
 		if (pit == null || !this.pits.contains(pit)) {

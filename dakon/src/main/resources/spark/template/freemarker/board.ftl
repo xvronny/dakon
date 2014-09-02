@@ -89,8 +89,7 @@
 		      	<div class="pits" id="dakonPits">
 		      		<#list board.getPits() as pit>
 		  			<div class="pit" id=${pit.getId()}>
-		  				${pit.getId()}
-						<#list pit.stones as stone>
+		  				<#list pit.stones as stone>
 			  			<div class="stone" id=${stone.uuid}>
 							<img src="/images/ruby.png"/>
 				      	</div>	
