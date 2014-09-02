@@ -7,7 +7,9 @@ var positions = [ [617.5 , 293],[536.5 , 299],[448.5 , 301],[366.5 , 298],[276.5
                   [195.5 , 380],[281.5 , 374],[370.5 , 375],[449.5 , 380],[530.5 , 379],[611.5 , 371],[692.5 , 351] ];
 
 $(document).ready(function() {
+	// set the container to relative
 	$(".container").css({position: 'relative'});
+	// position the pits and each stone
 	$(".pit").each(function(index) { 
 		var margin = 15,
 		    pitTop = positions[index][1] + margin,
@@ -25,5 +27,21 @@ $(document).ready(function() {
 				});
 			});
 		});
+	// hide the highlights
+	$(".highlight").each(function(index) { 
+			$(this).css({
+				top: 60, left: 60, position:'absolute', 
+				display: 'none', visibility: 'hidden', zIndex: -1
+			});
+		});
+	// hide the instructions
+	$(".instruction").each(function(index) { 
+			$(this).css({
+				width:820, height: 30, top: 240 + (index * 280), left: 60, 
+				position:'absolute', textAlign:'center',
+				display: 'none', visibility: 'hidden', zIndex: -1
+			});
+		});
 	});
+
 

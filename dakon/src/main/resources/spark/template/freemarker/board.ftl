@@ -97,6 +97,22 @@
 			      	</div>	
 	  				</#list>
 		      	</div>
+		      	<div class="highlights">
+			      	<div class="highlight" id="highlightTop">
+			      		<img src="/images/highlight_top.png"/>
+			      	</div>
+			      	<div class="highlight" id="highlightBottom">
+			      		<img src="/images/highlight_bottom.png"/>
+		      		</div>
+		      	</div>
+		      	<div class="instructions">
+			      	<div class="instruction" id="instructionTop">
+			      		Your turn to play, <strong>${board.players[0].name}</strong>. Select any pit on the top row.
+			      	</div>
+			      	<div class="instruction" id="instructionBottom">
+			      		Your turn to play, <strong>${board.players[1].name}</strong>. Select any pit from the bottom row.
+		      		</div>
+		      	</div>
 	      	</div>
 	      	
 	      	

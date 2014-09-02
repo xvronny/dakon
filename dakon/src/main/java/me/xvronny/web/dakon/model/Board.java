@@ -14,7 +14,9 @@ public class Board {
 	//       [ 0] [ 1] [ 2] [ 3] [ 4] [ 5] { 6P} 
 	// {13P} [12] [11] [10] [ 9] [ 8] [ 7]
 	private final List<Pit> pits;
+	
 	private final List<Player> players;
+	
 	private Player currentPlayer;
 	
 	public Board(Player playerA, Player playerB) {
@@ -45,6 +47,10 @@ public class Board {
 	
 	public List<Pit> getPits() {
 		return this.pits;
+	}
+	
+	public List<Player> getPlayers() {
+		return this.players;
 	}
 	
 	public List<Stone> getAllStones() {
