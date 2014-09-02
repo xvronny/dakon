@@ -1,6 +1,9 @@
-package me.xvronny.dakon;
+package me.xvronny.web.dakon;
 
 import static spark.Spark.*;
+import me.xvronny.web.dakon.model.Board;
+import me.xvronny.web.dakon.model.Player;
+import spark.Session;
 
 /**
  * Dakon is the East Javanese name for the Mancala/Lubang Menggali game. "Lubang Menggali" itself 
@@ -17,9 +20,14 @@ public class Dakon {
    public static void main(String[] args) {
       
       get("/dakon", (request, response) -> {
-         return "Hello World!";
+    	  Session session = request.session(true);
+    	  if (session.attribute("board") == null) {
+    		  session.attribute("board", new Board(new Player("A"), new Player("B"))) ;
+    	  }
+    	  return "Hello Ho Hi Ho!"+session.attribute("board");
       });
       
    }
 
 }
+
