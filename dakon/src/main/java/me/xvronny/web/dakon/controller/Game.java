@@ -1,6 +1,5 @@
 package me.xvronny.web.dakon.controller;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -26,6 +25,9 @@ public class Game {
 		return board.isPlayerFinished(current);
 	}
 	
+	public Player getCurrentPlayer() {
+		return current;
+	}
 	
 	public void moveStonesFrom(Pit pit) {
 		if (pit instanceof LubangMenggali) {
@@ -53,6 +55,7 @@ public class Game {
 				// first case :: if the stone fell into an empty pit on his own side
 				if (ownSide && !onLubang && recipient.getStones().size() == 1) {
 					// capture own pit and opposing pit
+					captureOppositePit(recipient);
 				}
 				// second case :: if the last stone fell into player's own lubang 
 				else if (ownSide && onLubang) {
@@ -70,6 +73,9 @@ public class Game {
 	
 	private void captureOppositePit(Pit recipient) {
 		Pit opposite = board.getOpposite(recipient);
+		LubangMenggali lubang = board.getLubangForPlayer(current);
+		lubang.addAllStones(recipient.removeAllStones());
+		lubang.addAllStones(opposite.removeAllStones());
 	}
 	
 	private void switchCurrentPlayer() {

@@ -7,6 +7,7 @@ import java.util.List;
 public class Board {
 	
 	public static final int PIT_PER_PLAYER = 6;
+	public static final int STONES_PER_PIT = 6;
 	
 	private final List<Pit> pits;
 	
@@ -14,7 +15,11 @@ public class Board {
 		this.pits = new ArrayList<Pit>();
 		for (Player player : Arrays.asList(playerA, playerB)) {
 			for (int i = 0; i < PIT_PER_PLAYER; i++) {
-				this.pits.add(new Pit(player));
+				Pit pit = new Pit(player);
+				for (int j = 0; j < STONES_PER_PIT; j++) {
+					pit.addStone(new Stone());
+				}
+				this.pits.add(pit);
 			}
 			this.pits.add(new LubangMenggali(player));
 		}
