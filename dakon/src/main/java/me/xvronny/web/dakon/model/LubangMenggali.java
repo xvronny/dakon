@@ -4,8 +4,8 @@ import java.util.List;
 
 public class LubangMenggali extends Pit {
 
-	public LubangMenggali(Player player) {
-		super(player);
+	public LubangMenggali(final Player player) {
+		super(player, Board.PIT_PER_PLAYER);
 	}
 	
 	public void addAllStones(List<Stone> stones) {

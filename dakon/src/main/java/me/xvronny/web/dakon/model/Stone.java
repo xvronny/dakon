@@ -12,4 +12,19 @@ public class Stone {
 		return this.uuid;
 	}
 	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) 
+			return false;
+		if (!(obj instanceof Stone))
+			return false;
+		Stone that = (Stone) obj;
+		return this.uuid.equals(that.uuid);
+	}
+	
+	@Override
+	public int hashCode() {
+		return this.uuid.hashCode();
+	}
+	
 }

@@ -41,15 +41,18 @@ public class Dakon {
       
       // create new board
       get("/board", (request, response) -> {
+    	  
     	  Session session = request.session(true);
-    	  Board board = new Board(new Player("playerA"), new Player("playerB"));
+    	  Board board = new Board(new Player("A"), new Player("B"));
     	  session.attribute("board", board);
+    	  
     	  Map<String, Object> attributes = new HashMap<>();
           attributes.put("brand", "Dakon");
           attributes.put("title", "Lubang Menggali");
           attributes.put("source", "https://github.com/xvronny/dakon");
-          attributes.put("homepage", "http://xvronny.me/");
-    	  return new ModelAndView(attributes, "board.ftl");
+          attributes.put("board", board);
+    	  
+          return new ModelAndView(attributes, "board.ftl");
       }, new FreeMarkerEngine());
       
       // read current board

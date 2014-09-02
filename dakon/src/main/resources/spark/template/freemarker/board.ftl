@@ -22,6 +22,7 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 		<script src="/js/bootstrap.min.js"></script>
 		<script src="/js/dakon.js"></script>
+		<script>var board;</script>
 	</head>
 	<body>
 
@@ -82,13 +83,25 @@
 
 		<div class="container">
 			<div class="hero-unit">
-				<img src="/images/fishboard_tilt.jpg"/>
+				<div class="board" id="dakonBoard">
+					<img src="/images/mancalaboard.jpg"/>
+		      	</div>
+		      	<div class="pits" id="dakonPits">
+		      		<#list board.getPits() as pit>
+		  			<div class="pit" id=${pit.getId()}>
+		  				${pit.getId()}
+						<#list pit.stones as stone>
+			  			<div class="stone" id=${stone.uuid}>
+							<img src="/images/ruby.png"/>
+				      	</div>	
+			  			</#list>
+			      	</div>	
+	  				</#list>
+		      	</div>
 	      	</div>
 	      	
-	      	<div>
-				<img src="/images/ruby.png"/>
-	      	</div>
-
+	      	
+  			
 	      	<footer>
 			  <p>Developed by <a href="http://xvronny.me/" target="_blank">xvronny</a>.</p>
 			</footer>
