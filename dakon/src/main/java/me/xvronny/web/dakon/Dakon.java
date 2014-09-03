@@ -13,71 +13,88 @@ import spark.Session;
 import spark.template.freemarker.FreeMarkerEngine;
 
 /**
- * Dakon is the East Javanese name for the Mancala/Lubang Menggali game. "Lubang Menggali" itself 
- * means "Hole-Digging" in Indonesian.
+ * Dakon is the East Javanese name for the Mancala/Lubang Menggali game.
+ * "Lubang Menggali" itself means "Hole-Digging" in Indonesian.
  * 
- * @see <a href="https://play.google.com/store/apps/details?id=com.amegoo.dakon&hl=en">Dakon Game</a>
- * @see <a href="https://www.youtube.com/watch?v=k4drX3HOnMg">How To Play Mancala</a>
+ * @see <a
+ *      href="https://play.google.com/store/apps/details?id=com.amegoo.dakon&hl=en">Dakon
+ *      Game</a>
+ * @see <a href="https://www.youtube.com/watch?v=k4drX3HOnMg">How To Play
+ *      Mancala</a>
  * 
  * @author ronnyhendrawan
  *
  */
 public class Dakon {
 
-   public static void main(String[] args) {
-	   
-	  // static file declaration
-	  staticFileLocation("/static");
-      
-	  // load homepage template
-      get("/", (request, response) -> {
-    	  Map<String, Object> attributes = new HashMap<>();
-          attributes.put("brand", "Dakon");
-          attributes.put("title", "Lubang Menggali");
-          attributes.put("source", "https://github.com/xvronny/dakon");
-          attributes.put("homepage", "http://xvronny.me/");
-    	  return new ModelAndView(attributes, "home.ftl");
-      }, new FreeMarkerEngine());
-      
-      // create new board
-      get("/board", (request, response) -> {
-    	  
-    	  Session session = request.session(true);
-    	  Board board = new Board(new Player("A"), new Player("B"));
-    	  session.attribute("board", board);
-    	  
-    	  Map<String, Object> attributes = new HashMap<>();
-          attributes.put("brand", "Dakon");
-          attributes.put("title", "Lubang Menggali");
-          attributes.put("source", "https://github.com/xvronny/dakon");
-          
-          attributes.put("board", board);
-    	  
-          return new ModelAndView(attributes, "board.ftl");
-      }, new FreeMarkerEngine());
-      
-      // read current board
-      get("/board/read", "application/json", (request, response) -> {
-    	  return request.session().attribute("board");
-      }, new JsonTransformer());
-      
-      // load saved board elsewhere
-      put("/board", "application/json", (request, response) -> {
-    	  JsonTransformer transformer = new JsonTransformer(); //request.body();
-    	  
-    	  Board board = transformer.parse(request.body(), Board.class);
-    	  request.session().attribute("board", board);
-    	  return board;
-      }, new JsonTransformer());
-      
-      // move pieces of the board
-      post("/board/move", "application/json", (request, response) -> {
-    	  Session session = request.session(true);
-    	  Board board = session.attribute("board");
-    	  return board;
-      }, new JsonTransformer());
-      
-   }
+	private static final Map<String, Object> properties = new HashMap<String, Object>();
+
+	private static Map<String, Object> getProperties() {
+		Map<String, Object> properties = new HashMap<String, Object>();
+		properties.put("brand", "Dakon");
+		properties.put("title", "Lubang Menggali");
+		properties.put("source", "https://github.com/xvronny/dakon");
+		properties.put("homepage", "http://xvronny.me/");
+		return properties;
+	}
+
+	public static void main(String[] args) {
+
+		// static file declaration
+		staticFileLocation("/static");
+
+		// load homepage template
+		get("/", (request, response) -> {
+			return new ModelAndView(getProperties(), "home.ftl");
+		}, new FreeMarkerEngine());
+
+		// create new board
+		get("/dakon", (request, response) -> {
+			
+			String nameA = request.params("playerA");
+			if (nameA == null) nameA = "Player A";
+			String nameB = request.params("playerB");
+			if (nameB == null) nameB = "Player B";
+			
+			Board board = new Board(new Player(nameA), new Player(nameB));
+			request.session(true).attribute("board", board);
+
+			Map<String, Object> attributes = getProperties();
+			attributes.put("board", board);
+
+			return new ModelAndView(attributes, "board.ftl");
+		}, new FreeMarkerEngine());
+
+		// load saved board elsewhere
+		post("/dakon", (request, response) -> {
+			JsonTransformer transformer = new JsonTransformer();
+			String content = request.queryParams("fileContentField");
+			Board board = transformer.parse(content, Board.class);
+			if (board == null) halt(400, "Malformed fileContentField : "+content);
+			request.session().attribute("board", board);
+
+			Map<String, Object> attributes = getProperties();
+			attributes.put("board", board);
+
+			return new ModelAndView(attributes, "board.ftl");
+		}, new FreeMarkerEngine());
+
+		// read current board as a json
+		get("/board", (request, response) -> {
+			// forcing old browsers to go by unknown content type
+			response.header("Content-Type", "text/dakon");
+			response.header("Content-Disposition", "attachment; filename=dakon.json");
+			// return board as plaintext json
+			return request.session().attribute("board");
+		}, new JsonTransformer());
+
+		// move pieces of the board
+		post("/board", "application/json", (request, response) -> {
+			Session session = request.session(true);
+			Board board = session.attribute("board");
+			return board;
+		}, new JsonTransformer());
+
+	}
 
 }
-

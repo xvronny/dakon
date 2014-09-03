@@ -22,7 +22,7 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 		<script src="/js/bootstrap.min.js"></script>
 		<script src="/js/dakon.js"></script>
-		<script>var board;</script>
+		<script>var onBoard = true;</script>
 	</head>
 	<body>
 
@@ -52,22 +52,22 @@
 		            <ul class="dropdown-menu">
 		              
 						<li>
-		                    <a href="/board">
-		                       <i class="icon-signal"></i>
+		                    <a href="/#" id="menuStart">
+		                       <i class="icon-play"></i>
 		                       Start New Board
 		                     </a>
 		                  </li>
 					    <li class="divider"></li>
 					  	<li>
-					  		<a href="/save">
-					  			<i class="icon-list"></i>
+					  		<a href="/#" id="menuSave">
+					  			<i class="icon-download-alt"></i>
 					  			Save Board
 					  		</a>
 					  	</li>
 					  	<li class="divider"></li>
 					  	<li>
-					  		<a href="/load">
-					  			<i class="icon-list"></i>
+					  		<a href="/#" id="menuLoad">
+					  			<i class="icon-share"></i>
 					  			Load Board
 					  		</a>
 					  	</li>
@@ -97,7 +97,7 @@
 			      	</div>	
 	  				</#list>
 		      	</div>
-		      	<div class="highlights">
+		      	<div class="highlights" id="dakonHighlights">
 			      	<div class="highlight" id="highlightTop">
 			      		<img src="/images/highlight_top.png"/>
 			      	</div>
@@ -105,7 +105,7 @@
 			      		<img src="/images/highlight_bottom.png"/>
 		      		</div>
 		      	</div>
-		      	<div class="instructions">
+		      	<div class="instructions" id="dakonInstructions">
 			      	<div class="instruction" id="instructionTop">
 			      		Your turn to play, <strong>${board.players[0].name}</strong>. Select any pit on the top row.
 			      	</div>
@@ -113,9 +113,13 @@
 			      		Your turn to play, <strong>${board.players[1].name}</strong>. Select any pit from the bottom row.
 		      		</div>
 		      	</div>
+		      	<div class="fileForm" id="dakonForm">
+				<form method="POST" action="/dakon" id="loadFileForm">
+			  		<input type="file" name="filePathField" id="filePathField"/>
+			  		<input type="hidden" name="fileContentField" id="fileContentField"/>
+			    </form>
+			</div>
 	      	</div>
-	      	
-	      	
   			
 	      	<footer>
 			  <p>Developed by <a href="http://xvronny.me/" target="_blank">xvronny</a>.</p>

@@ -14,7 +14,6 @@ public class Pit {
 		this.index = index;
 		this.stones = new ArrayList<Stone>();
 	}
-	
 
 	public Player getPlayer() {
 		return this.player;

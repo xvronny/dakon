@@ -45,22 +45,15 @@
 		            <ul class="dropdown-menu">
 		              
 						<li>
-		                    <a href="/board">
-		                       <i class="icon-signal"></i>
+		                    <a href="/#" id="menuStart">
+		                       <i class="icon-play"></i>
 		                       Start New Board
-		                     </a>
-		                  </li>
-					    <li class="divider"></li>
-					  	<li>
-					  		<a href="/save">
-					  			<i class="icon-list"></i>
-					  			Save Board
-					  		</a>
-					  	</li>
+		                    </a>
+		                </li>
 					  	<li class="divider"></li>
 					  	<li>
-					  		<a href="/load">
-					  			<i class="icon-list"></i>
+					  		<a href="/#" id="menuLoad">
+					  			<i class="icon-share"></i>
 					  			Load Board
 					  		</a>
 					  	</li>
@@ -86,7 +79,7 @@
 		        modify as you please. 
 	      	</div>
 
-	      	<div class="alert alert-block">
+	      	<div class="alert alert-block" id="dakonRules">
 			  <h4>How to Play</h4>
 			  <br />
 			  <p>I didn't know how to play Dakon or Mancala, because I've never played it. Thankfully nowadays we have Youtube
@@ -94,6 +87,13 @@
 			  on how the game works.</p><br />
 			  <iframe width="853" height="480" src="//www.youtube.com/embed/k4drX3HOnMg" frameborder="0" allowfullscreen></iframe>
 			  <br />
+			</div>
+			
+			<div class="fileForm" id="dakonForm">
+				<form method="POST" action="/dakon" id="loadFileForm">
+			  		<input type="file" name="filePathField" id="filePathField"/>
+			  		<input type="hidden" name="fileContentField" id="fileContentField"/>
+			    </form>
 			</div>
 
 	      	<hr>

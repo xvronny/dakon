@@ -8,7 +8,7 @@ import me.xvronny.web.dakon.controller.move.Move;
 import me.xvronny.web.dakon.controller.move.MoveStone;
 import me.xvronny.web.dakon.controller.move.SwitchPlayer;
 import me.xvronny.web.dakon.model.Board;
-import me.xvronny.web.dakon.model.LubangMenggali;
+import me.xvronny.web.dakon.model.Lubang;
 import me.xvronny.web.dakon.model.Pit;
 import me.xvronny.web.dakon.model.Player;
 import me.xvronny.web.dakon.model.Stone;
@@ -22,7 +22,7 @@ public class Game {
 	}
 	
 	public List<Move> executeOneStep(Pit chosenPit) {
-		if (chosenPit instanceof LubangMenggali) {
+		if (chosenPit instanceof Lubang) {
 			throw new IllegalArgumentException("Can't move stones from LubangMenggali");
 		}
 		// initialize variables
@@ -36,7 +36,7 @@ public class Game {
 			Stone rolling = stones.remove(0);
 			// determine the recipient of the
 			currentPit = board.getNext(currentPit);
-			if ((currentPit instanceof LubangMenggali) && 
+			if ((currentPit instanceof Lubang) && 
 					(!currentPit.getPlayer().equals(currentPlayer))) {
 				// skip forward for the opponent's lubang 
 				currentPit = board.getNext(currentPit);
@@ -47,12 +47,12 @@ public class Game {
 			// check whether this is the last stone
 			if (stones.size() == 0) {
 				boolean ownSide = currentPit.getPlayer().equals(currentPlayer);
-				boolean onLubang = currentPit instanceof LubangMenggali;
+				boolean onLubang = currentPit instanceof Lubang;
 				// first case :: if the stone fell into an empty pit on his own side
 				if (ownSide && !onLubang && currentPit.getStones().size() == 1) {
 					// capture own pit and opposing pit
 					Pit oppositePit = board.getOpposite(currentPit);
-					LubangMenggali lubang = board.getLubangForCurrentPlayer();
+					Lubang lubang = board.getLubangForCurrentPlayer();
 					List<Stone> captives = new ArrayList<Stone>();
 					captives.addAll(currentPit.removeAllStones());
 					captives.addAll(oppositePit.removeAllStones());

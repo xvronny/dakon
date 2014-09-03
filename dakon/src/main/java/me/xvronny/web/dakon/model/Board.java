@@ -34,7 +34,7 @@ public class Board {
 				this.pits.add(pit);
 			}
 			// don't forget the Lubang
-			this.pits.add(new LubangMenggali(player));
+			this.pits.add(new Lubang(player));
 		}
 		// randomly select current player
 		int index = (int) Math.round(Math.random());
@@ -93,10 +93,10 @@ public class Board {
 		return this.pits.get(opposant);
 	}
 	
-	public LubangMenggali getLubangForCurrentPlayer() {
+	public Lubang getLubangForCurrentPlayer() {
 		int index = (this.pits.get(0).getPlayer().equals(currentPlayer)) ? 
 				PIT_PER_PLAYER : (2 * PIT_PER_PLAYER) + 1;
-		return (LubangMenggali) this.pits.get(index);
+		return (Lubang) this.pits.get(index);
 	}
 	
 	public void switchCurrentPlayer() {
