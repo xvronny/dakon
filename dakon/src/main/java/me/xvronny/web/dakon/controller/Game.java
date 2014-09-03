@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.xvronny.web.dakon.controller.move.CapturePit;
+import me.xvronny.web.dakon.controller.move.FinishGame;
 import me.xvronny.web.dakon.controller.move.Move;
 import me.xvronny.web.dakon.controller.move.MoveStone;
 import me.xvronny.web.dakon.controller.move.SwitchPlayer;
@@ -53,15 +54,20 @@ public class Game {
 					// capture own pit and opposing pit
 					Pit oppositePit = board.getOpposite(currentPit);
 					Lubang lubang = board.getLubangForCurrentPlayer();
-					List<Stone> captives = new ArrayList<Stone>();
-					captives.addAll(currentPit.removeAllStones());
-					captives.addAll(oppositePit.removeAllStones());
-					lubang.addAllStones(captives);
-					moves.add(new CapturePit(currentPit, oppositePit, lubang, captives));
+					Stone ownStone = currentPit.removeAllStones().get(0);
+					lubang.addStone(ownStone);
+					List<Stone> capturedStones = oppositePit.removeAllStones();
+					lubang.addAllStones(capturedStones);
+					moves.add(new CapturePit(currentPit, ownStone, oppositePit, capturedStones, lubang));
+					
 				}
 				// second case :: if the last stone fell into player's own lubang 
 				else if (ownSide && onLubang) {
 					// do nothing (have another turn)
+				}
+				// check whether the current player has won the game
+				else if (board.isFinished()) {
+					moves.add(new FinishGame(board.getCurrentPlayer()));
 				}
 				// default case :: if the last stone fell into enemy territory or
 				// on to a non empty pit. This is executed on the last stone so 

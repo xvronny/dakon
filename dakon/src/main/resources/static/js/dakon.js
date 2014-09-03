@@ -3,12 +3,10 @@
 // initialize positions of pits and stones in the board
 // ----------------------------------------------------
 
-var positions = [ [ 617.5, 293 ], [ 536.5, 299 ], [ 448.5, 301 ],
-		[ 366.5, 298 ], [ 276.5, 286 ], [ 190.5, 286 ], [ 115.5, 326 ],
-		[ 195.5, 380 ], [ 281.5, 374 ], [ 370.5, 375 ], [ 449.5, 380 ],
-		[ 530.5, 379 ], [ 611.5, 371 ], [ 692.5, 351 ] ];
-
-var currentPlayerName = "";
+var positions =   [ [ 619.5, 293 ], [ 536.5, 299 ], [ 448.5, 301 ], 
+				    [ 366.5, 298 ], [ 282.5, 286 ], [ 196.5, 286 ], [ 115.5, 326 ],
+					[ 198.5, 382 ], [ 284.5, 380 ], [ 370.5, 377 ], 
+					[ 449.5, 380 ], [ 530.5, 379 ], [ 609.5, 374 ], [ 692.5, 351 ] ];
 
 // UI instantiation of the board
 
@@ -19,7 +17,10 @@ function handleMoves(moves) {
 	    	moveStone(move.stone, move.origin, move.destination);
 	    }
 	    else if (move.name === "capture") {
-	    	capturePit(move.finalPit, move.capturedPit, move.lubang, move.captives);
+	    	capturePit(move.ownPit, move.ownStone, move.capturedPit, move.capturedStones, move.lubang);
+	    }
+	    else if (move.name === "finish") {
+	    	finishGame(move.winningPlayer);
 	    }
 	    else {
 	    	switchPlayer(move.currentPlayer);
@@ -28,18 +29,30 @@ function handleMoves(moves) {
 }
 
 function moveStone(stone, origin, destination) {
-	var start = $( "#"+origin.id ).position(), finish = $( "#"+destination.id ).position();
-	var horizontal = finish.left - start.left, vertical = finish.top - start.top;
-	/*$( "#"+stone.uuid ).animate({
-	    top:vertical, left:horizontal,
-	  }, 5000 );*/
-	$( "#"+stone.uuid ).css({
-	    top:finish.top, left:finish.left,
+	var delta = getAnimationDelta(origin, destination),
+	    index = $( "#"+destination.id ).children().length,
+	    position = getAllocatedPosition(index);
+	$( "#"+stone.uuid ).animate({
+	    top: delta.y, left: delta.x,
+	  }, // animate
+	  5000, // animationDuration 
+	  function () { // onAnimationCompleted
+		  $( "#"+stone.uuid )
+		  		.detach()
+		  		.appendTo("#"+destination.id)
+		  		.css({
+				    top : position.top, 
+				    left : position.left,
+				    zIndex : (2000 + index)
+				  });
 	  });
 }
 
-function capturePit(finalPit, opposite, lubang, stones) {
-	
+function capturePit(ownPit, ownStone, opposite, captives, lubang) {
+	moveStone(ownStone, ownPit, lubang);
+	for (var i = 0; i < captives.length; i++) {
+		moveStone(captives[i], opposite, lubang);
+	}
 }
 
 function switchPlayer(nextPlayer) {
@@ -57,6 +70,27 @@ function switchPlayer(nextPlayer) {
 
 	currentPlayer = nextPlayer;
 }
+
+function finishGame(player) {
+	alert("Congratulations "+player.name+", we have a winner!");
+}
+
+function getAllocatedPosition(stoneIndex) {
+	var center = {left : 30, top : 24}, radius = 20;
+	if (stoneIndex == 0) return center;
+	var radian = (stoneIndex-1) * Math.PI / 6;
+	return  {top : center.top + (radius * Math.sin(radian)),
+		     left : center.left + (radius * Math.cos(radian))};
+}
+
+function getAnimationDelta(origin, destination) {
+	var start = $( "#"+origin.id ).position(), 
+	    finish = $( "#"+destination.id ).position(),
+	    center = {left : 30, top : 24};
+	return { x : (finish.left - start.left) + center.left, 
+		     y : (finish.top - start.top) + center.top };
+}
+
 
 $(document).ready(
 		function() {
@@ -78,14 +112,15 @@ $(document).ready(
 									left : pitLeft,
 									position : 'absolute',
 									zIndex : (1000 + index),
-								// border:'1px solid black'
+									//border:'1px solid black'
 								});
 								$(this).children().each(function(index) {
+									var pos = getAllocatedPosition(index);
 									$(this).css({
 										width : 20,
 										height : 20,
-										top : 10 + (index * 5),
-										left : 2 + (index * 11),
+										top : pos.top,
+										left : pos.left,
 										position : 'absolute',
 										zIndex : (2000 + index)
 									});
@@ -155,18 +190,34 @@ $(document).ready(
 				}
 				return false;
 			});
-			// register pit click handlers
-			$("#dakonPits").click(function(event) {
-				var pitId = event.target.id;
-				if ($(event.target).attr("class") !== "pit") {
-					pitId = $(event.target).closest(".pit").attr('id');
-				}
-				$.post( "/board", pitId, function( result ) {
-					  	console.log(result);
-					  	handleMoves(eval(result));
-					}).fail(function(e) {
-					    alert("Error : "+e.responseText);
-					});
-			});
+			// register pit click & hover handlers
+			$("#dakonPits")
+				.click(function(event) {
+					var pitId = event.target.id;
+					if ($(event.target).attr("class") !== "pit") {
+						pitId = $(event.target).closest(".pit").attr('id');
+					}
+					$.post( "/board", pitId, function( result ) {
+						  	console.log(result);
+						  	handleMoves(eval(result));
+						})
+						.fail(function(e) {
+						    alert(e.responseText);
+						})
+				})
+				.hover( // onMouseEnter
+					function(event) { 
+						var pitId = event.target.id;
+						if ($(event.target).attr("class") !== "pit") {
+							pitId = $(event.target).closest(".pit").attr('id');
+						}
+						var size = $( "#"+pitId ).children().length;
+						$("#"+pitId).append("<span class=\"pitSize\">"+size+"</span>");
+					}, // onMouseExit
+					function(event) { 
+						$( this ).find( "span:last" ).remove();					
+					}
+				);
+			// initialize highlights
 			switchPlayer(currentPlayer);
 		});

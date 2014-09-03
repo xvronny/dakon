@@ -8,29 +8,35 @@ import me.xvronny.web.dakon.model.Stone;
 
 public class CapturePit extends Move {
 	
-	private final Pit finalPit;
+	private final Pit ownPit;
+	private final Stone ownStone;
 	private final Pit capturedPit;
+	private final List<Stone> capturedStones;
 	private final Lubang lubang;
-	private final List<Stone> captives;
 	
-	public CapturePit(Pit finalPit, Pit capturedPit, Lubang lubang, List<Stone> captives) {
+	public CapturePit(Pit ownPit, Stone ownStone, Pit capturedPit, List<Stone> capturedStones, Lubang lubang) {
 		super("capture");
-		this.finalPit = finalPit;
-		this.capturedPit = capturedPit;
+		this.ownPit = ownPit;
 		this.lubang = lubang;
-		this.captives = captives;
+		this.ownStone = ownStone;
+		this.capturedPit = capturedPit;
+		this.capturedStones = capturedStones;
 	}
 	
-	public List<Stone> getCaptives() {
-		return captives;
+	public Pit getOwnPit() {
+		return ownPit;
 	}
 	
-	public Pit getFinalPit() {
-		return finalPit;
+	public Stone getOwnStone() {
+		return ownStone;
 	}
 	
 	public Pit getCapturedPit() {
 		return capturedPit;
+	}
+	
+	public List<Stone> getCapturedStones() {
+		return capturedStones;
 	}
 	
 	public Lubang getLubang() {

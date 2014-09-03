@@ -63,7 +63,7 @@ public class Board {
 	
 	public boolean isFinished() {
 		int startIndex = (this.pits.get(0).getPlayer().equals(currentPlayer)) ? 0 : PIT_PER_PLAYER + 1;
-		for (int i = startIndex; i < PIT_PER_PLAYER + 1; i++) {
+		for (int i = startIndex; i < startIndex + PIT_PER_PLAYER + 1; i++) {
 			if (!pits.get(i).isEmpty()) {
 				return false;
 			}
