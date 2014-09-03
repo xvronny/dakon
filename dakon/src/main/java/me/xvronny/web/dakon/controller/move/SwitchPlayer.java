@@ -7,6 +7,7 @@ public class SwitchPlayer extends Move {
 	private final Player currentPlayer;
 	
 	public SwitchPlayer(final Player currentPlayer) {
+		super("switch");
 		this.currentPlayer = currentPlayer;
 	}
 	

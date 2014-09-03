@@ -57,7 +57,7 @@ public class Game {
 					captives.addAll(currentPit.removeAllStones());
 					captives.addAll(oppositePit.removeAllStones());
 					lubang.addAllStones(captives);
-					moves.add(new CapturePit(currentPit, oppositePit, captives));
+					moves.add(new CapturePit(currentPit, oppositePit, lubang, captives));
 				}
 				// second case :: if the last stone fell into player's own lubang 
 				else if (ownSide && onLubang) {

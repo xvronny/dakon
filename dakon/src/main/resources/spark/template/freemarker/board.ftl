@@ -22,7 +22,7 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 		<script src="/js/bootstrap.min.js"></script>
 		<script src="/js/dakon.js"></script>
-		<script>var onBoard = true;</script>
+		<script>var currentPlayer = ${currentPlayer}, topPlayer = ${topPlayer};</script>
 	</head>
 	<body>
 

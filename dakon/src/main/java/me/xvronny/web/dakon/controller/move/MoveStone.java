@@ -10,6 +10,7 @@ public class MoveStone extends Move {
 	private final Stone stone;
 	
 	public MoveStone(Stone stone, Pit origin, Pit destination) {
+		super("move");
 		this.stone = stone;
 		this.origin = origin;
 		this.destination = destination;

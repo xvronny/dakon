@@ -55,31 +55,42 @@ public class Dakon {
 		get("/dakon", (request, response) -> {
 			
 			String nameA = request.params("playerA");
-			if (nameA == null) nameA = "Player A";
+			if (nameA == null) nameA = "PlayerA";
 			String nameB = request.params("playerB");
-			if (nameB == null) nameB = "Player B";
+			if (nameB == null) nameB = "PlayerB";
 			
 			Board board = new Board(new Player(nameA), new Player(nameB));
 			request.session(true).attribute("board", board);
-
+			
+			JsonTransformer transformer = new JsonTransformer();
+			
 			Map<String, Object> attributes = getProperties();
 			attributes.put("board", board);
+			attributes.put("currentPlayer", transformer.render(board.getCurrentPlayer()));
+			attributes.put("topPlayer", transformer.render(board.getPlayers().get(0)));
 
 			return new ModelAndView(attributes, "board.ftl");
+		
 		}, new FreeMarkerEngine());
 
 		// load saved board elsewhere
 		post("/dakon", (request, response) -> {
-			JsonTransformer transformer = new JsonTransformer();
+			
 			String content = request.queryParams("fileContentField");
+			
+			JsonTransformer transformer = new JsonTransformer();
 			Board board = transformer.parse(content, Board.class);
+			
 			if (board == null) halt(400, "Malformed fileContentField : "+content);
 			request.session().attribute("board", board);
 
 			Map<String, Object> attributes = getProperties();
 			attributes.put("board", board);
+			attributes.put("currentPlayer", transformer.render(board.getCurrentPlayer()));
+			attributes.put("topPlayer", transformer.render(board.getPlayers().get(0)));
 
 			return new ModelAndView(attributes, "board.ftl");
+		
 		}, new FreeMarkerEngine());
 
 		// read current board as a json

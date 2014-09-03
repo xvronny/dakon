@@ -5,6 +5,7 @@ import java.util.List;
 
 public class Pit {
 	
+	protected final String id;
 	protected final Integer index;
 	protected final Player player;
 	protected final List<Stone> stones;
@@ -12,6 +13,7 @@ public class Pit {
 	public Pit(final Player player, final int index) {
 		this.player = player;
 		this.index = index;
+		this.id = String.format("%s_%d",this.player.getName(), this.index);
 		this.stones = new ArrayList<Stone>();
 	}
 
@@ -24,7 +26,7 @@ public class Pit {
 	}
 
 	public String getId() {
-		return String.format("%s::%d",this.player.getName(), this.index);
+		return this.id;
 	}
 	
 	public List<Stone> getStones() {

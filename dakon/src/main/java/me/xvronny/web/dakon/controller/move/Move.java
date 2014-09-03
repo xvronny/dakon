@@ -7,4 +7,14 @@ package me.xvronny.web.dakon.controller.move;
  */
 public class Move {
 
+	protected final String name;
+	
+	protected Move(String name) {
+		this.name = name;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
 }
