@@ -52,7 +52,7 @@
 		            <ul class="dropdown-menu">
 		              
 						<li>
-		                    <a href="/#" id="menuStart">
+		                    <a href="/dakon" id="menuStart">
 		                       <i class="icon-play"></i>
 		                       Start New Board
 		                     </a>
@@ -66,7 +66,7 @@
 					  	</li>
 					  	<li class="divider"></li>
 					  	<li>
-					  		<a href="/#" id="menuLoad">
+					  		<a href="/dakon" id="menuLoad">
 					  			<i class="icon-share"></i>
 					  			Load Board
 					  		</a>
@@ -88,9 +88,9 @@
 		      	</div>
 		      	<div class="pits" id="dakonPits">
 		      		<#list board.getPits() as pit>
-		  			<div class="pit" id=${pit.getId()}>
+		  			<div class="pit" id="${pit.getId()}">
 		  				<#list pit.stones as stone>
-			  			<div class="stone" id=${stone.uuid}>
+			  			<div class="stone" id="${stone.uuid}">
 							<img src="/images/ruby.png"/>
 				      	</div>	
 			  			</#list>

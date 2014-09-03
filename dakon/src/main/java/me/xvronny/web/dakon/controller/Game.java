@@ -21,7 +21,7 @@ public class Game {
 		this.board = board;
 	}
 	
-	public List<Move> executeOneStep(Pit chosenPit) {
+	public List<Move> executeStep(Pit chosenPit) {
 		if (chosenPit instanceof Lubang) {
 			throw new IllegalArgumentException("Can't move stones from LubangMenggali");
 		}
@@ -68,7 +68,7 @@ public class Game {
 				// there won't be any effect to the loop.
 				else {
 					board.switchCurrentPlayer();
-					moves.add(new SwitchPlayer());
+					moves.add(new SwitchPlayer(board.getCurrentPlayer()));
 				}
 			}
 		}

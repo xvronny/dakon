@@ -24,7 +24,7 @@ public class Pit {
 	}
 
 	public String getId() {
-		return String.format("%s/%d",this.player.getName(), this.index);
+		return String.format("%s::%d",this.player.getName(), this.index);
 	}
 	
 	public List<Stone> getStones() {

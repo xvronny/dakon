@@ -5,7 +5,10 @@ import static spark.Spark.*;
 import java.util.HashMap;
 import java.util.Map;
 
+import me.xvronny.web.dakon.controller.Game;
 import me.xvronny.web.dakon.model.Board;
+import me.xvronny.web.dakon.model.Lubang;
+import me.xvronny.web.dakon.model.Pit;
 import me.xvronny.web.dakon.model.Player;
 import me.xvronny.web.dakon.util.JsonTransformer;
 import spark.ModelAndView;
@@ -92,7 +95,16 @@ public class Dakon {
 		post("/board", "application/json", (request, response) -> {
 			Session session = request.session(true);
 			Board board = session.attribute("board");
-			return board;
+			Game game = new Game(board);
+			// parse request body
+			Pit chosenPit = board.getPitById(request.body());
+			if (chosenPit == null) halt(400, "Malformed pit id : "+request.body());
+			if (!chosenPit.getPlayer().equals(board.getCurrentPlayer()))
+				halt(400, "Illegal move on opponent pit id : "+request.body());
+			if (chosenPit instanceof Lubang)
+				halt(400, "Illegal move on Lubang : "+request.body());
+			// return list of all move
+			return game.executeStep(chosenPit);
 		}, new JsonTransformer());
 
 	}

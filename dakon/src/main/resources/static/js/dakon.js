@@ -107,6 +107,14 @@ $(document).ready(
 			});
 			// register pit click handlers
 			$("#dakonPits").click(function(event) {
-				alert("Handler for .click(" + event.target + ") called.");
+				var pitId = event.target.id;
+				if (event.target.nodeName !== "DIV") {
+					pitId = $(event.target).closest(".pit").attr('id');
+				}
+				$.post( "/board", pitId, function( result ) {
+					  	console.log(result);
+					}).fail(function(e) {
+					    alert("Error : "+e);
+					});
 			});
 		});

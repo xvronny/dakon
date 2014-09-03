@@ -93,6 +93,15 @@ public class Board {
 		return this.pits.get(opposant);
 	}
 	
+	public Pit getPitById(String pitId) {
+		for (Pit pit : pits) {
+			if (pit.getId().equals(pitId)) {
+				return pit;
+			}
+		}
+		return null;
+	}
+	
 	public Lubang getLubangForCurrentPlayer() {
 		int index = (this.pits.get(0).getPlayer().equals(currentPlayer)) ? 
 				PIT_PER_PLAYER : (2 * PIT_PER_PLAYER) + 1;
