@@ -73,10 +73,10 @@
 		        <h1>${brand}</h1>
 		        <br />
 		        <p><strong>${title}</strong>, also known as <strong>Mancala</strong>, is the most ancient board game known to mankind,
-		        with the oldest board found dating back from the 4th century Roman Egypt era. <strong>Dakon</strong> is the name of 
+		        with the oldest board found dating back from the 4th century Roman Egypt era. <strong>Dakon</strong> is the name of
 		        this bean-sowing game in the region of East Java.</p>
 		        <p><strong>Interested?</strong> This project is hosted @<a href="${source}">github</a>, feel free to fork, play, and
-		        modify as you please. 
+		        modify as you please.
 	      	</div>
 
 	      	<div class="alert alert-block" id="dakonRules">

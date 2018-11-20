@@ -1,30 +1,30 @@
 package me.xvronny.web.dakon.model;
 
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+
+import java.util.UUID;
+
+/**
+ * Representation of the movable stones in the gameplay.
+ */
+@AllArgsConstructor
+@EqualsAndHashCode
+@Getter
 public class Stone {
 
-	private final String uuid;
-	
-	public Stone(String uuid) {
-		this.uuid = uuid;
+	/**
+	 * Identifier for the movable stones. Not strictly required but useful for debugging.
+	 */
+	private String uuid;
+
+	/**
+	 * Simple static method used during board initialization.
+	 * @return newInstance
+	 */
+	public static Stone newInstance() {
+		return new Stone(UUID.randomUUID().toString());
 	}
-	
-	public String getUuid() {
-		return this.uuid;
-	}
-	
-	@Override
-	public boolean equals(Object obj) {
-		if (obj == null) 
-			return false;
-		if (!(obj instanceof Stone))
-			return false;
-		Stone that = (Stone) obj;
-		return this.uuid.equals(that.uuid);
-	}
-	
-	@Override
-	public int hashCode() {
-		return this.uuid.hashCode();
-	}
-	
+
 }

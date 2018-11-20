@@ -87,7 +87,7 @@
 					<img src="/images/mancalaboard.jpg"/>
 		      	</div>
 		      	<div class="pits" id="dakonPits">
-		      		<#list board.getPits() as pit>
+		      		<#list board.getAllStorable() as pit>
 		  			<div class="pit" id="${pit.getId()}">
 		  				<#list pit.stones as stone>
 			  			<div class="stone" id="${stone.uuid}">

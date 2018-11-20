@@ -1,65 +1,40 @@
 package me.xvronny.web.dakon.model;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class Pit {
-	
-	protected final String id;
-	protected final Integer index;
-	protected final Player player;
-	protected final List<Stone> stones;
-	
+/**
+ * Pit where stones can be moved into or taken from by the players.
+ */
+@EqualsAndHashCode
+@Getter
+public class Pit extends Store {
+
+	/**
+	 * Position of the pit on the side side of the board, counter clockwise.
+	 */
+	protected int index;
+
 	public Pit(final Player player, final int index) {
-		this.player = player;
+		super(player);
 		this.index = index;
 		this.id = String.format("%s_%d",this.player.getName(), this.index);
-		this.stones = new ArrayList<Stone>();
 	}
 
-	public Player getPlayer() {
-		return this.player;
+	public void initializePit(final int nbStones) {
+		for (int i=0; i < nbStones; i++) {
+			this.addStone(Stone.newInstance());
+		}
 	}
 
-	public int getIndex() {
-		return this.index;
-	}
-
-	public String getId() {
-		return this.id;
-	}
-	
-	public List<Stone> getStones() {
-		return this.stones;
-	}
-	
-	public boolean isEmpty() {
-		return this.stones.isEmpty();
-	}
-	
-	public void addStone(Stone stone) {
-		this.stones.add(stone);
-	}
-	
-	public List<Stone> removeAllStones() {
-		List<Stone> clone = new ArrayList<>(this.stones);
+	public List<Stone> popAllStones() {
+		List<Stone> removedStones = new ArrayList<>(this.stones);
 		this.stones.clear();
-		return clone;
-	}
-	
-	@Override
-	public boolean equals(Object obj) {
-		if (obj == null) 
-			return false;
-		if (!(obj instanceof Pit))
-			return false;
-		Pit that = (Pit) obj;
-		return this.getId().equals(that.getId());
-	}
-	
-	@Override
-	public int hashCode() {
-		return this.getId().hashCode();
+		return removedStones;
 	}
 
 }
+

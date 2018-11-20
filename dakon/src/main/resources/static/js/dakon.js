@@ -13,11 +13,12 @@ var positions =   [ [ 619.5, 293 ], [ 536.5, 299 ], [ 448.5, 301 ],
 function handleMoves(moves) {
 	for (i = 0; i < moves.length; i++) { 
 	    var move = moves[i];
+	    console.log(move);
 	    if (move.name === "move") {
 	    	moveStone(move.stone, move.origin, move.destination);
 	    }
 	    else if (move.name === "capture") {
-	    	capturePit(move.ownPit, move.ownStone, move.capturedPit, move.capturedStones, move.lubang);
+	    	capturePit(move.ownPit, move.ownStone, move.capturedPit, move.capturedStones, move.target);
 	    }
 	    else if (move.name === "finish") {
 	    	finishGame(move.winningPlayer);
@@ -35,13 +36,13 @@ function moveStone(stone, origin, destination) {
 	$( "#"+stone.uuid ).animate({
 	    top: delta.y, left: delta.x,
 	  }, // animate
-	  5000, // animationDuration 
+	  5000, // animationDuration
 	  function () { // onAnimationCompleted
 		  $( "#"+stone.uuid )
 		  		.detach()
 		  		.appendTo("#"+destination.id)
 		  		.css({
-				    top : position.top, 
+				    top : position.top,
 				    left : position.left,
 				    zIndex : (2000 + index)
 				  });
@@ -56,13 +57,13 @@ function capturePit(ownPit, ownStone, opposite, captives, lubang) {
 }
 
 function switchPlayer(nextPlayer) {
-	
+
 	var currentHalf = (nextPlayer.name === topPlayer.name) ? "Top" : "Bottom";
 	var otherHalf = (currentHalf === "Top") ? "Bottom" : "Top";
-	
+
 	var cssOn = {display : 'block', visibility : 'visible', zIndex : 120};
 	var cssOff = {display : 'none', visibility : 'hidden', zIndex : -1};
-	
+
 	$("#highlight"+currentHalf).css(cssOn);
 	$("#highlight"+otherHalf).css(cssOff);
 	$("#instruction"+currentHalf).css(cssOn);
@@ -84,7 +85,7 @@ function getAllocatedPosition(stoneIndex) {
 }
 
 function getAnimationDelta(origin, destination) {
-	var start = $( "#"+origin.id ).position(), 
+	var start = $( "#"+origin.id ).position(),
 	    finish = $( "#"+destination.id ).position(),
 	    center = {left : 30, top : 24};
 	return { x : (finish.left - start.left) + center.left, 

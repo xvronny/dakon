@@ -1,46 +1,54 @@
 package me.xvronny.web.dakon.controller.move;
 
-import java.util.List;
-
-import me.xvronny.web.dakon.model.Lubang;
+import lombok.Builder;
+import lombok.Getter;
 import me.xvronny.web.dakon.model.Pit;
 import me.xvronny.web.dakon.model.Stone;
+import me.xvronny.web.dakon.model.Store;
 
-public class CapturePit extends Move {
-	
+import java.util.List;
+
+/**
+ * Move for capturing the opponent pit.
+ */
+@Builder
+@Getter
+public class CapturePit extends AbstractMove {
+
+	/**
+	 * The final pit where we encounter empty pit.
+	 */
 	private final Pit ownPit;
+
+	/**
+	 * The stone moving to ownPit, will be moved to target.
+	 */
 	private final Stone ownStone;
+
+	/**
+	 * Opponent's pit which is the counterpart of ownPit.
+	 */
 	private final Pit capturedPit;
+
+	/**
+	 * All stones which were located in capturedPit.
+	 */
 	private final List<Stone> capturedStones;
-	private final Lubang lubang;
-	
-	public CapturePit(Pit ownPit, Stone ownStone, Pit capturedPit, List<Stone> capturedStones, Lubang lubang) {
+
+	/**
+	 * Destination of ownStone and captureStones.
+	 */
+	private final Store target;
+
+	public CapturePit(final Pit ownPit, final Stone ownStone,
+					  final Pit capturedPit, final List<Stone> capturedStones,
+					  final Store target) {
 		super("capture");
 		this.ownPit = ownPit;
-		this.lubang = lubang;
 		this.ownStone = ownStone;
 		this.capturedPit = capturedPit;
 		this.capturedStones = capturedStones;
-	}
-	
-	public Pit getOwnPit() {
-		return ownPit;
-	}
-	
-	public Stone getOwnStone() {
-		return ownStone;
-	}
-	
-	public Pit getCapturedPit() {
-		return capturedPit;
-	}
-	
-	public List<Stone> getCapturedStones() {
-		return capturedStones;
-	}
-	
-	public Lubang getLubang() {
-		return lubang;
+		this.target = target;
 	}
 
 }
